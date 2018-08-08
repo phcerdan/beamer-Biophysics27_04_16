@@ -9,8 +9,7 @@
 \usepackage{multimedia}
 \usepackage{booktabs}
 
-
-\usepackage{subfig}
+\usepackage{subcaption}
 % To fix in old caption: https://tex.stackexchange.com/questions/426088/texlive-pretest-2018-beamer-and-subfig-collide
 \makeatletter
 \let\@@magyar@captionfix\relax
@@ -61,7 +60,7 @@
   \note{ \citep{wilhelm_elasticity_2003} \citep{onck_alternative_2005}}
   \begin{columns}[onlytextwidth]
     \column{0.5\textwidth}
-    \begin{exampleblock}{Affine transformations valid when: }
+    \begin{exampleblock}{Affine transformations valid when any of this: }
       % \footnotesize{\textbf{In Homogeneous and Isotropic Network}}
       \begin{itemize}
         \item Isotropic and Homogeneous Network
@@ -130,24 +129,55 @@
 % \end{columns}
 % }
 % \end{frame}
+\begin{frame}
+  \frametitle{Mechanical simulations use toy network architectures}
+  \begin{figure}
+    \begin{subfigure}[t]{0.33\textwidth}
+      \centering
+      \includegraphics[width=0.9\linewidth]{Figures/mikado_initial.png}
+      \subcaption{Mikado model}
+      \label{subfig:mikado}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.33\textwidth}
+      \centering
+      \includegraphics[width=0.9\linewidth]{Figures/fcc_lattice_wiki.png}
+      \subcaption{Face-centered-cube (FCC) lattice}
+      \label{subfig:fcc_lattice}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.33\textwidth}
+      \centering
+      \includegraphics[width=0.9\linewidth]{Figures/eightchain-simple.png}
+      \subcaption{Eight-chain model}
+      \label{subfig:eightchain}
+    \end{subfigure}
+    \caption{Different toy models used for mechanical simulations.}
+    \label{fig:toy-models}
+  \end{figure}
+  \begin{center}
+    \metroset{block=fill}
+    \begin{exampleblock}{Toy models? We can use real architectures gathered from 3D microscopy data}
+    \end{exampleblock}
+  \end{center}
+  % \metroset{block=fill}
+  % \begin{exampleblock}{}
+  % \begin{itemize}
+  %   \item<1-> Going beyond the homogeneous and isotropic model of biopolymer networks: \textbf{Characterize the architecture} of connected filaments using images from different microscopy techniques depending on the size of the biopolymer.
+  %   \item<2-> How different architectures do influent the \textbf{mechanical properties}? Are completely different biopolymers sharing similar geometries?
+  %   \item<3-> Develop an open-source, free, user friendly, tested, and well documented software for others to use with microscopy images.
+  % \end{itemize}
+  % \end{exampleblock}
+\end{frame}
+
 \section{Goal of the thesis}
 \begin{frame}
-  \frametitle{Goals and research questions}
+  \frametitle{Goals}
   % \metroset{block=fill}
   \begin{exampleblock}{}
   \begin{itemize}
-    \item<1-> Going beyond the homogeneous and isotropic model of biopolymer networks: \textbf{Characterize the architecture} of connected filaments using images from different microscopy techniques depending on the size of the biopolymer.
-    \item<2-> How different architectures do influent the \textbf{mechanical properties}? Are completely different biopolymers sharing similar geometries?
-    \item<3-> Develop an open-source, free, user friendly, tested, and well documented software for others to use with microscopy images.
+    \item<1-> Extract the geometry of biopolymers networks from 3D images.
+    \item<2-> Provide software as a tool-set, enabling others to extract and analyze networks.
   \end{itemize}
   \end{exampleblock}
-\end{frame}
-\begin{frame}<beamer:0>
-  \frametitle{The limit of the isotropic approximation}
-  \begin{itemize}
-    \item The power law behaviour has derived from universal slope of 1 \cite{mackintosh_bill} to \textbf{surprisingly(?)} a slope of  3/2. We think that this data require a further explanation beyond the assumption that collagen is somehow an exception in that universality claimed years ago.
-    \item The shift to strain stiffening, or the beginning of a nematic phase of partially oriented fibers, might depend on architecture.
-  \end{itemize}
 \end{frame}
 % \begin{frame}
 %   \frametitle{Steps to characterize the network}
@@ -167,8 +197,7 @@
 %       \end{center}
 % \end{frame}
 
-\section{Challenges}
-\section{Gathering structure data:}
+\section{Challenges: Validating Microscopy Data}
 
 \begin{frame}
   \frametitle{Scattering: SAXS and SANS}
@@ -192,7 +221,7 @@
           \begin{itemize}
               \item Necessary to reach polysaccharides scale.
               \item Sample preparation is hard. Artifacts?
-              \item \textbf{Working on validation method} comparing it with scattering.
+              \item In chapter 2 we concluded that network size features can be trusted.
           \end{itemize}
       \end{exampleblock}
       \column{0.5\textwidth}
@@ -211,9 +240,28 @@
   \end{columns}
 \end{frame}
 
-\section{Image Analysis}
+\section{Challenges: Image Denoising and Skeletonization}
 \begin{frame}[t]
-  \frametitle{Pipeline}
+  \frametitle{Image Denoising and Skeletonization}
+    \vspace{0.8cm}
+    \metroset{block=fill}
+    \begin{exampleblock}{Wavelet denoising}
+      Developed Isotropic Wavelets framework to remove noise, and aid with the segmentation in the extraction pipeline.
+    \end{exampleblock}
+    \vspace{0.8cm}
+    \metroset{block=fill}
+    \begin{exampleblock}{Skeletonization algorithms}
+      \begin{enumerate}
+        \item Developed state of art method from Digital Topology fields to get a thin skeleton representation of the biopolymer network.
+      \end{enumerate}
+    \end{exampleblock}
+    \vspace{1cm}
+    % \noindent\rule[0.1pt]{\linewidth}{0.01pt}
+\end{frame}
+
+\section{Extraction of Architecture and Graph Characterization}
+\begin{frame}[t]
+  \frametitle{From Images to Spatial Graphs}
     \begin{alertblock}{Goal:}
         Process raw image data to get a spatial graph representation of the network.
     \end{alertblock}
@@ -221,6 +269,7 @@
     \metroset{block=fill}
     \begin{exampleblock}{Steps:}
       \begin{enumerate}
+        \item \textbf{Pre-processing:} Enhance signal to noise ratio with pre-processing (denoise).
         \item \textbf{Segmentation:} Extract object of interest from image. Binary image.
         \item \textbf{Skeletonization:} Thin representation of the object.
       \end{enumerate}
@@ -228,6 +277,157 @@
     \vspace{1cm}
     The skeleton will then be adapted into a \textbf{Graph} for characterization.
     % \noindent\rule[0.1pt]{\linewidth}{0.01pt}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Graphs: A Link to Complex Systems}
+  A graph is a representation of connected components in terms of nodes and edges/links.
+
+  \begin{columns}[onlytextwidth]
+      \column{0.5\textwidth}
+        \begin{exampleblock}{Spatial Network of biopolymers:}
+          \begin{itemize}
+            \item A node corresponds to a junction/crosslink of biopolymers.
+            \item An edge represents the polymer-chain itself.
+          \end{itemize}
+        \end{exampleblock}
+      \column{0.5\textwidth}
+        \includegraphics[width=0.8\linewidth]{./Figures/spatial_graph.png}
+  \end{columns}
+
+  Graphs are a powerful tool connecting to the field of \textbf{Complex Systems}.
+
+  We want to take advantage of all those existing algorithms for \textbf{characterization} of soft materials.
+
+\end{frame}
+\begin{frame}
+  \frametitle{Characterization of graphs: Statistical Distributions}
+  We are able to analyze the graph to gather statistical distributions of some properties:
+  \vspace{0.3cm}
+  \begin{columns}[onlytextwidth]
+      \column{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth]{./Figures/distributions_maths.png}
+      \column{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth]{./Figures/distributions_actin.png}
+  \end{columns}
+  \vspace{0.3cm}
+  Protein and polysaccharides networks share the same \textbf{functional distributions} for
+  degree, end-to-end distances, contour-lengths and angles.
+\end{frame}
+\begin{frame}
+  \frametitle{Reconstruction in-silico}
+  \begin{columns}[onlytextwidth]
+      \column{0.41\textwidth}
+      \metroset{block=fill}
+      \begin{exampleblock}{Reconstruction algorithm}
+         \begin{itemize}
+           \item Also provided, as a exploratory tool for different networks architectures is the reconstruction algorithm.
+           \item From the set of statistical distributions, it is able to generate the full geometry of a network which follows the targeted distributions.
+         \end{itemize}
+       \end{exampleblock}
+      \column{0.59\textwidth}
+        \includegraphics[width=0.99\textwidth]{./Figures/project_scheme.png}
+  \end{columns}
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Results: Proof of concept}
+%   \footnotesize{
+%   \uncover<1>{Three Networks analyzed:
+%   \begin{columns}[onlytextwidth]
+%       \column{0.5\textwidth}
+%       \begin{itemize}
+%       \item Polysaccharides using TEM: Pectin, Carrageenan
+%       \end{itemize}
+%       \column{0.5\textwidth}
+%       \begin{itemize}
+%           \item Proteins using Confocal: Actin (Collagen from literature \citep{lindstrom_finite-strain_2013} ).
+%       \end{itemize}
+%   \end{columns}
+%   }
+%   \uncover<2->{
+%       Statistical distributions of local graph properties:
+%       \alert{Showing same functional forms}
+%
+%       \vspace{1mm}
+%   }
+%   }
+%   \vspace{0.5cm}
+%   \centering\includegraphics[width=0.99\textwidth]{./Figures/results_poster.png}
+% \end{frame}
+\begin{frame}
+  \frametitle{Conclusions}
+  \begin{columns}[onlytextwidth]
+      \column{0.60\textwidth}
+      \metroset{block=fill}
+      \begin{alertblock}{Exploring network geometries:}
+          \begin{itemize}
+              \item Provide software for reliably extract biopolymer networks from 3D images
+              \item Link to complex network libraries for graph analysis. \textbf{Reconstruct in-silico networks from it}
+              \item The tool-set developed provide soft-matter scientists to use these networks for simulations and characterization of materials.
+          \end{itemize}
+      \end{alertblock}
+      \column{0.40\textwidth}
+        \centering\includegraphics[width=\textwidth]{./Figures/network_model_fig.png}
+  \end{columns}
+\end{frame}
+\plain{Thanks!}
+\begin{frame}[allowframebreaks]
+
+  \frametitle{References}
+
+  \bibliography{bibliography}
+  \bibliographystyle{plainnat}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Others, left here just in case
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{The limit of the isotropic approximation}
+  \begin{itemize}
+    \item The power law behaviour has derived from universal slope of 1 \cite{mackintosh_bill} to \textbf{surprisingly(?)} a slope of  3/2. We think that this data require a further explanation beyond the assumption that collagen is somehow an exception in that universality claimed years ago.
+    \item The shift to strain stiffening, or the beginning of a nematic phase of partially oriented fibers, might depend on architecture.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Acknowledgments}
+  \vspace{0.3cm}
+  \begin{columns}[onlytextwidth]
+    \column{0.33\textwidth}
+    \includegraphics[width=0.9\textwidth]{./Figures/people/macdiarmid.png}
+    \column{0.33\textwidth}
+    \includegraphics[width=0.9\textwidth]{./Figures/people/massey.png}
+    \column{0.33\textwidth}
+    \includegraphics[width=0.9\textwidth]{./Figures/people/riddet.png}
+  \end{columns}
+  \begin{columns}[onlytextwidth]
+    \column{0.5\textwidth}
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./Figures/people/bill.png}
+  \caption*{Main Supervisor: \textbf{Prof. M.A.K Williams}}
+\end{figure}
+    \column{0.5\textwidth}
+    \begin{figure}[htpb]
+      \centering
+      \includegraphics[width=0.3\textwidth]{./Figures/people/brad.png}
+      \caption*{Dr. Brad Mansel, New Zealand}
+    \end{figure}
+  \end{columns}
+  \begin{columns}[onlytextwidth]
+    \column{0.45\textwidth}
+    \begin{itemize}
+      \item Andrew Leis. CSIRO Animal Health. Australia.
+      \item Leif Lundin. SP Food and Bioscience. Sweden.
+    \end{itemize}
+    \column{0.45\textwidth}
+    \textbf{Visit us in NZ or online at:}\newline
+        \url{www.biophysics.ac.nz}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[t]
@@ -378,64 +578,6 @@
   \end{tikzpicture}
 \end{frame}
 
-\section{Graph Characterization}
-\begin{frame}
-  \frametitle{Graphs: A Link to Complex Systems}
-  A graph is a representation of connected components in terms of nodes and edges/links.
-
-  \begin{exampleblock}{Spatial Network of biopolymers:}
-    \begin{itemize}
-      \item A node corresponds to a junction/crosslink of biopolymers.
-      \item An edge represents the polymer-chain itself.
-    \end{itemize}
-  \end{exampleblock}
-
-  Graphs are a powerful tool connecting to the field of \textbf{Complex Systems}.
-
-  We want to take advantage of all those existing algorithms for \textbf{characterization} of soft materials.
-
-\end{frame}
-\begin{frame}
-  \frametitle{Graphs: A Link to Complex Systems}
-  With a graph representation of the system we can now link our spatial graph to standard complex network libraries.
-  \begin{description}[t]
-      \item[IGraph] C, R, Python (GPL licence)
-      \item[Boost: Graph and GraphParallel] C++ (MIT licence)
-      \item[NetworkX] Python (MIT licence)
-  \end{description}
-
-  \vspace{1cm}
-  \begin{columns}[onlytextwidth]
-      \column{0.33\textwidth}
-      \includegraphics[width=0.9\textwidth]{./Figures/software_logos/igraph_tittle.png}
-      \column{0.33\textwidth}
-      \includegraphics[width=0.9\textwidth]{./Figures/software_logos/boost_logo.jpeg}
-      \column{0.33\textwidth}
-      \includegraphics[width=0.9\textwidth]{./Figures/software_logos/networkx_logo.jpeg}
-  \end{columns}
-
-\end{frame}
-\begin{frame}
-  \frametitle{Generating Software Tools}
-  \begin{columns}[onlytextwidth]
-      \column{0.49\textwidth}
-      \includegraphics[width=0.9\textwidth]{./Figures/software_screenshots/fft_screenshot.png}
-      \vspace{1cm}
-      Radial FFT analysis to compare images and SAXS:
-      \column{0.49\textwidth}
-      \includegraphics[width=0.9\textwidth]{./Figures/software_screenshots/graph_to_distrutions.png}
-      \vspace{1cm}
-      Compute statistical distributions from graph.
-  \end{columns}
-  % \centering
-  % \movie[height=0.75\textheight, width=\textwidth, poster, autostart, loop, showcontrols]{}{Videos/softwareShort.mp4}
-  \note
-  {
-    Instead of using a one time solution, I am interested in provide computational, user friendly tools for others to use.\newline
-    This has driven me to the software development side
-  }
-\end{frame}
-
 \begin{frame}
   \frametitle{Generating Software Tools II}
   \begin{columns}[onlytextwidth]
@@ -454,260 +596,6 @@
   \end{columns}
 \end{frame}
 
-% \begin{frame}
-%   \frametitle{Results: Proof of concept}
-%   \footnotesize{
-%   \uncover<1>{Three Networks analyzed:
-%   \begin{columns}[onlytextwidth]
-%       \column{0.5\textwidth}
-%       \begin{itemize}
-%       \item Polysaccharides using TEM: Pectin, Carrageenan
-%       \end{itemize}
-%       \column{0.5\textwidth}
-%       \begin{itemize}
-%           \item Proteins using Confocal: Actin (Collagen from literature \citep{lindstrom_finite-strain_2013} ).
-%       \end{itemize}
-%   \end{columns}
-%   }
-%   \uncover<2->{
-%       Statistical distributions of local graph properties:
-%       \alert{Showing same functional forms}
-%
-%       \vspace{1mm}
-%   }
-%   }
-%   \vspace{0.5cm}
-%   \centering\includegraphics[width=0.99\textwidth]{./Figures/results_poster.png}
-% \end{frame}
-\begin{frame}
-  \frametitle{Summary}
-  \begin{columns}[onlytextwidth]
-      \column{0.60\textwidth}
-      \metroset{block=fill}
-      \begin{alertblock}{Exploring network geometries:}
-          \begin{itemize}
-              \item When does architecture matter? What is its role at lower scales?
-              \item Gather best image analysis techniques for biopolymers.
-              \item Link to complex network libraries for graph analysis. \textbf{Reconstruct in-silico networks from it}
-              \item \alert{The dream} would be to provide soft-matter scientists with a reliable tool to \textbf{characterize} their materials, linking to the field of ComplexSystems.
-          \end{itemize}
-      \end{alertblock}
-      \column{0.40\textwidth}
-        \centering\includegraphics[width=\textwidth]{./Figures/network_model_fig.png}
-  \end{columns}
-\end{frame}
-\begin{frame}{Acknowledgments}
-
-  \vspace{0.3cm}
-  \begin{columns}[onlytextwidth]
-    \column{0.33\textwidth}
-    \includegraphics[width=0.9\textwidth]{./Figures/people/macdiarmid.png}
-    \column{0.33\textwidth}
-    \includegraphics[width=0.9\textwidth]{./Figures/people/massey.png}
-    \column{0.33\textwidth}
-    \includegraphics[width=0.9\textwidth]{./Figures/people/riddet.png}
-  \end{columns}
-  \begin{columns}[onlytextwidth]
-    \column{0.5\textwidth}
-\begin{figure}[htpb]
-  \centering
-  \includegraphics[width=0.8\textwidth]{./Figures/people/bill.png}
-  \caption*{Main Supervisor: \textbf{Prof. M.A.K Williams}}
-\end{figure}
-    \column{0.5\textwidth}
-    \begin{figure}[htpb]
-      \centering
-      \includegraphics[width=0.3\textwidth]{./Figures/people/brad.png}
-      \caption*{Dr. Brad Mansel, New Zealand}
-    \end{figure}
-  \end{columns}
-  \begin{columns}[onlytextwidth]
-    \column{0.45\textwidth}
-    \begin{itemize}
-      \item Andrew Leis. CSIRO Animal Health. Australia.
-      \item Leif Lundin. SP Food and Bioscience. Sweden.
-    \end{itemize}
-    \column{0.45\textwidth}
-    \textbf{Visit us in NZ or online at:}\newline
-        \url{www.biophysics.ac.nz}
-  \end{columns}
-\end{frame}
-\plain{Thanks for your attention!}
-\begin{frame}{Follow development live in github}
-  Keep up to date with further development at my github page:
-  \vspace{2mm}
-  \begin{columns}[onlytextwidth]
-    \column{0.45\textwidth}
-      \begin{center}\url{github.com/phcerdan}\end{center}
-    \column{0.45\textwidth}
-      \movie[height=0.3\textheight, width=0.8\textwidth, poster, autostart, loop]{}{Videos/softwareShort.mp4}
-  \end{columns}
-
-
-  \vspace{2mm}
-  Get this beamer theme from:
-
-  \begin{center}\url{github.com/matze/mtheme}\end{center}
-
-  \begin{center}\ccbysa\end{center}
-
-\end{frame}
-\begin{frame}[allowframebreaks]
-
-  \frametitle{References}
-
-  \bibliography{bibliography}
-  \bibliographystyle{plainnat}
-
-\end{frame}
 
 \end{document}
-
-% \begin{frame}{Lists}
-%   \begin{columns}[T,onlytextwidth]
-%     \column{0.33\textwidth}
-%       Items
-%       \begin{itemize}
-%         \item Milk \item Eggs \item Potatos
-%       \end{itemize}
-
-%     \column{0.33\textwidth}
-%       Enumerations
-%       \begin{enumerate}
-%         \item First, \item Second and \item Last.
-%       \end{enumerate}
-
-%     \column{0.33\textwidth}
-%       Descriptions
-%       \begin{description}
-%         \item[PowerPoint] Meeh. \item[Beamer] Yeeeha.
-%       \end{description}
-%   \end{columns}
-% \end{frame}
-% \begin{frame}{Animation}
-%   \begin{itemize}[<+- | alert@+>]
-%     \item \alert<4>{This is\only<4>{ really} important}
-%     \item Now this
-%     \item And now this
-%   \end{itemize}
-% \end{frame}
-% \begin{frame}{Figures}
-%   \begin{figure}
-%     \newcounter{density}
-%     \setcounter{density}{20}
-%     \begin{tikzpicture}
-%       \def\couleur{alerted text.fg}
-%       \path[coordinate] (0,0)  coordinate(A)
-%                   ++( 90:5cm) coordinate(B)
-%                   ++(0:5cm) coordinate(C)
-%                   ++(-90:5cm) coordinate(D);
-%       \draw[fill=\couleur!\thedensity] (A) -- (B) -- (C) --(D) -- cycle;
-%       \foreach \x in {1,...,40}{%
-%           \pgfmathsetcounter{density}{\thedensity+20}
-%           \setcounter{density}{\thedensity}
-%           \path[coordinate] coordinate(X) at (A){};
-%           \path[coordinate] (A) -- (B) coordinate[pos=.10](A)
-%                               -- (C) coordinate[pos=.10](B)
-%                               -- (D) coordinate[pos=.10](C)
-%                               -- (X) coordinate[pos=.10](D);
-%           \draw[fill=\couleur!\thedensity] (A)--(B)--(C)-- (D) -- cycle;
-%       }
-%     \end{tikzpicture}
-%     \caption{Rotated square from
-%     \href{http://www.texample.net/tikz/examples/rotated-polygons/}{texample.net}.}
-%   \end{figure}
-% \end{frame}
-% \begin{frame}{Tables}
-%   \begin{table}
-%     \caption{Largest cities in the world (source: Wikipedia)}
-%     \begin{tabular}{lr}
-%       \toprule
-%       City & Population\\
-%       \midrule
-%       Mexico City & 20,116,842\\
-%       Shanghai & 19,210,000\\
-%       Peking & 15,796,450\\
-%       Istanbul & 14,160,467\\
-%       \bottomrule
-%     \end{tabular}
-%   \end{table}
-% \end{frame}
-% \begin{frame}{Blocks}
-%   Three different block environments are pre-defined and may be styled with an
-%   optional background color.
-
-%   \begin{columns}[T,onlytextwidth]
-%     \column{0.5\textwidth}
-%       \begin{block}{Default}
-%         Block content.
-%       \end{block}
-
-%       \begin{alertblock}{Alert}
-%         Block content.
-%       \end{alertblock}
-
-%       \begin{exampleblock}{Example}
-%         Block content.
-%       \end{exampleblock}
-
-%     \column{0.5\textwidth}
-
-%       \metroset{block=fill}
-
-%       \begin{block}{Default}
-%         Block content.
-%       \end{block}
-
-%       \begin{alertblock}{Alert}
-%         Block content.
-%       \end{alertblock}
-
-%       \begin{exampleblock}{Example}
-%         Block content.
-%       \end{exampleblock}
-
-%   \end{columns}
-% \end{frame}
-% \begin{frame}{Math}
-%   \begin{equation*}
-%     e = \lim_{n\to \infty} \left(1 + \frac{1}{n}\right)^n
-%   \end{equation*}
-% \end{frame}
-% \begin{frame}{Line plots}
-%   \begin{figure}
-%     \begin{tikzpicture}
-%       \begin{axis}[
-%         mlineplot,
-%         width=0.9\textwidth,
-%         height=6cm,
-%       ]
-
-%         \addplot {sin(deg(x))};
-%         \addplot+[samples=100] {sin(deg(2*x))};
-
-%       \end{axis}
-%     \end{tikzpicture}
-%   \end{figure}
-% \end{frame}
-% \begin{frame}{Bar charts}
-%   \begin{figure}
-%     \begin{tikzpicture}
-%       \begin{axis}[
-%         mbarplot,
-%         xlabel={Foo},
-%         ylabel={Bar},
-%         width=0.9\textwidth,
-%         height=6cm,
-%       ]
-
-%       \addplot plot coordinates {(1, 20) (2, 25) (3, 22.4) (4, 12.4)};
-%       \addplot plot coordinates {(1, 18) (2, 24) (3, 23.5) (4, 13.2)};
-%       \addplot plot coordinates {(1, 10) (2, 19) (3, 25) (4, 15.2)};
-
-%       \legend{lorem, ipsum, dolor}
-
-%       \end{axis}
-%     \end{tikzpicture}
-%   \end{figure}
-% \end{frame}
 
